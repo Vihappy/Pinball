@@ -1,34 +1,46 @@
-#include <chipmunk/chipmunk.h>
-
-class Ball {
-public:
-    Ball(cpSpace* space, float radius, float mass, const cpVect& position) {
-        cpFloat moment = cpMomentForCircle(mass, 0, radius, cpvzero);
-        body = cpSpaceAddBody(space, cpBodyNew(mass, moment));
-        cpBodySetPosition(body, position);
-        shape = cpSpaceAddShape(space, cpCircleShapeNew(body, radius, cpvzero));
-        cpShapeSetFriction(shape, 0.7);
-    }
-
-    sf::CircleShape GetShape() {
-        sf::CircleShape ballShape(20.0);
-        cpVect ballPosition = cpBodyGetPosition(body);
-        ballShape.setPosition(ballPosition.x, ballPosition.y);
-        ballShape.setFillColor(sf::Color::Red);
-        return ballShape;
-    }
-
-    ~Ball() {
-        cpShapeFree(shape);
-        cpBodyFree(body);
-    }
-
-    cpBody* getBody() {
-        return body;
-    }
-
+#pragma once
+#include <SFML/Graphics.hpp>
+#include <Box2D/Box2D.h>
+#include <iostream>
+using namespace std;
+class Ball
+{
 private:
-    int radius;
-    cpBody* body;
-    cpShape* shape;
+    b2CircleShape formaBola;
+    b2Body *cuerpoBola;
+public:
+    Ball(b2World& mundo,float radio,float friccion,float densidad,float x, float y) {
+        // Crear un cuerpo dinámico
+        b2BodyDef cuerpoBolaDef;
+        cuerpoBolaDef.type = b2_dynamicBody;
+        cuerpoBolaDef.position.Set(x,y);
+        cuerpoBola = mundo.CreateBody(&cuerpoBolaDef);
+
+        // Crear una forma circular
+        formaBola.m_radius = radio;
+
+        // Agregar la forma al cuerpo
+        b2FixtureDef fixtureBolaDef;
+        fixtureBolaDef.shape = &formaBola;
+        fixtureBolaDef.density = densidad;//0.1
+        fixtureBolaDef.friction = friccion;//0.7
+        cuerpoBola->CreateFixture(&fixtureBolaDef);
+    }
+    ~Ball() {}
+    void Dibujar(sf::RenderWindow &window)
+    {
+        //cout << "Posicion de la bola: " << cuerpoBola->GetPosition().x << ", " << cuerpoBola->GetPosition().y << endl;
+        // Dibujar la bola
+        sf::CircleShape bola(formaBola.m_radius);
+        bola.setOrigin(formaBola.m_radius, formaBola.m_radius);
+        bola.setFillColor(sf::Color::Red);
+        bola.setPosition(
+            cuerpoBola->GetPosition().x, 
+            cuerpoBola->GetPosition().y);
+        window.draw(bola);
+    }
+        int Posicion(sf::RenderWindow &window)
+    {
+        return cuerpoBola->GetPosition().y;
+    }
 };

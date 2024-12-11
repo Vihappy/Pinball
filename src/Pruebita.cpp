@@ -1,21 +1,27 @@
 // Pinball PablitoClavito y Violetiguis
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
+#include <SFML/Audio.hpp>
 #include <iostream>
+#include <Bumper.hpp>
+#include <Pared.hpp>
+#include <Ball.hpp>
+#include<Rebotadores.hpp>
 using namespace std;
 
 int main()
 {
+    float posicion;
     int fuerza = 1;
     // Crear una ventana
-    sf::RenderWindow window(sf::VideoMode(800, 635), "SFML Image");
+    sf::RenderWindow window(sf::VideoMode(800, 635), "Pinball");
     sf::Font font;
+    sf::Music music;
     if (!font.loadFromFile("./assets/fonts/Ring.ttf"))
     {
         // Manejar el error si no se puede cargar la fuente
         return -1;
     }
-
     // Cargar la imagen desde un archivo
     sf::Texture texture;
     if (!texture.loadFromFile("./assets/images/tableringuis.png"))
@@ -23,56 +29,54 @@ int main()
         // Manejar el error si no se puede cargar la imagen
         return -1;
     }
-
+        if (!music.openFromFile("./assets/music/Musica.ogg"))
+    {
+        // Error al cargar el archivo de música
+        return -1;
+    }
     b2Vec2 vectorGravedad(0.0f, 10.0f);
     b2World mundo(vectorGravedad);
 
-        // Crear un suelo estático
-    b2BodyDef cuerpoSueloDef;
-    cuerpoSueloDef.position.Set(400, 500.0f); // Posición del centro del cuerpo
-    b2Body* cuerpoSuelo = mundo.CreateBody(&cuerpoSueloDef);
+    // Vértices del triángulo (en metros)
+    std::array<b2Vec2, 3> vertices = {
+        b2Vec2(-1.0f, -0.5f), // Vértice inferior izquierdo
+        b2Vec2(1.0f, -0.5f),  // Vértice inferior derecho
+        b2Vec2(1.0f, 1.0f)    // Vértice superior
+    };
 
-    // Crear una forma rectangular
-    b2PolygonShape formaSuelo;
-    int boxWidth = 10; // 600 pixeles de ancho
-    int boxHeight = 10; // 10 pixeles de alto
-    formaSuelo.SetAsBox(boxWidth / 2.0f, boxHeight / 2.0f);
+    // Crear un triángulo
+    Triangulo triangulo(mundo, vertices, 1.0f, 300.0f, 470.0f, 0.0f); // Ficción, posición, ángulo
 
-    // Agregar la forma al cuerpo
-    b2FixtureDef fixtureSueloDef;
-    fixtureSueloDef.shape = &formaSuelo;
-    fixtureSueloDef.friction = 1.0f;
-    cuerpoSuelo->CreateFixture(&fixtureSueloDef);
+    Bumper b1(mundo,28,1,237.0,215);
+    Bumper b2(mundo,28,1,120, 130.0f);
+    Bumper b3(mundo,28,1,354, 130.0f);
+    //Limites
+    Pared l1(mundo,20,635,1,10,318,0.0f);
+    Pared l2(mundo,20,635,1,466,318,0.0f);
+    Pared l3(mundo,476,20,1,238,625,0.0f);
+    Pared l4(mundo,476,20,1,238,10,0.0f);
+    //Sección con angulo
+    Pared l5(mundo,100,20,1,100,475,33.0f);
+    Pared l6(mundo,100,20,1,375,475,147.0f);
+    //Pared de paletas
+    Pared l7(mundo,15,94,1,65,397,0.0f);
+    Pared l8(mundo,15,94,1,410,397,0.0f);
+    
 
-    // Crear un cuerpo dinámico
-    b2BodyDef cuerpoBolaDef;
-    cuerpoBolaDef.type = b2_dynamicBody;
-    cuerpoBolaDef.position.Set(200.0f, 0.0f);
-    b2Body* cuerpoBola = mundo.CreateBody(&cuerpoBolaDef);
-
-    // Crear una forma circular
-    b2CircleShape formaBola;
-    formaBola.m_radius = 15.0f;
-
-    // Agregar la forma al cuerpo
-    b2FixtureDef fixtureBolaDef;
-    fixtureBolaDef.shape = &formaBola;
-    fixtureBolaDef.density = 0.01f;
-    fixtureBolaDef.friction = 0.7f;
-    cuerpoBola->CreateFixture(&fixtureBolaDef);
-
-
-
+    //Bola dimámica
+    Ball p1(mundo,15,0.7,0.01,150,30.0f);
+   // Ball p2(mundo,15,0.7,0.01,250,30.0f);
+    Ball p3(mundo,15,0.7,0.01,350,30.0f);
     // Crear un sprite y asignarle la textura
     sf::Sprite sprite(texture);
-    
     // Crear un objeto de texto LOTR
     sf::Text text;
     text.setFont(font);
     text.setString("Pinball");
     text.setCharacterSize(40);
-    text.setPosition(500, 100);
-
+    text.setPosition(600, 100);
+    // Reproducir la música
+    music.play();
     // Bucle principal
     while (window.isOpen())
     {
@@ -86,42 +90,46 @@ int main()
                 window.close();
             }
         }
-   
         // Ajustar el valor de 1.0 / 60.0 para cambiar la velocidad de la simulación física
         mundo.Step(1.0f / 60.0f, 6, 2);
-        
         // Limpiar la ventana
         window.clear();
-        // Dibujar el suelo
-        sf::RectangleShape suelo(sf::Vector2f(boxWidth, boxHeight));
-        suelo.setOrigin(boxWidth / 2.0f, boxHeight / 2.0f); // El origen x,y está en el centro de la forma
-        suelo.setPosition(
-            cuerpoSuelo->GetPosition().x, 
-            cuerpoSuelo->GetPosition().y);
-
-        // Dibujar la bola
-        sf::CircleShape bola(formaBola.m_radius);
-        bola.setOrigin(formaBola.m_radius, formaBola.m_radius);
-        bola.setFillColor(sf::Color::Red);
-        bola.setPosition(
-            cuerpoBola->GetPosition().x, 
-            cuerpoBola->GetPosition().y);
-
-
         // Dibujar el sprite en la ventana
         window.draw(sprite);
         //Mostrar texto
          window.draw(text);
-        // Dibujar el sprite en la ventana
-        window.draw(bola);
-        window.draw(suelo);
-
-
+        sf::RectangleShape rectangle(sf::Vector2f(100, 100));
+        rectangle.setFillColor(sf::Color::Black);
+        rectangle.setPosition(150,50);
+        // Esperar hasta que la música termine
+        if (music.getStatus() != sf::Music::Playing)
+        {
+            window.close();
+        }
+        window.draw(rectangle);
+        // Dibujar las figuras en la ventana.
+        b1.Dibujar(window);
+        b2.Dibujar(window);
+        b3.Dibujar(window);
+        l1.Dibujar(window);
+        l2.Dibujar(window);
+        l3.Dibujar(window);
+        l4.Dibujar(window);
+        l5.Dibujar(window);
+        l6.Dibujar(window);
+        l7.Dibujar(window);
+        l8.Dibujar(window);
+        triangulo.Dibujar(window);
+        p1.Dibujar(window);
+       /*if(posicion==599)
+        {
+             Ball p2(mundo,15,0.7,0.01,250,30.0f);
+             window.clear();
+            p2.Dibujar(window);
+        }
+        p3.Dibujar(window);    */     
         // Mostrar la ventana
         window.display();
     }
-
     return 0;
 }
-
-
