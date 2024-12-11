@@ -7,6 +7,7 @@
 #include <Pared.hpp>
 #include <Ball.hpp>
 #include<Rebotadores.hpp>
+#include<Paletas.hpp>
 using namespace std;
 
 int main()
@@ -61,6 +62,8 @@ int main()
     //Pared de paletas
     Pared l7(mundo,15,94,1,65,397,0.0f);
     Pared l8(mundo,15,94,1,410,397,0.0f);
+    Paleta paletaDerecha(mundo,20,50,1,200,475,45.0f);
+
     
 
     //Bola dimámica
@@ -80,6 +83,8 @@ int main()
     // Bucle principal
     while (window.isOpen())
     {
+        paletaDerecha.Presionar();
+
         // Procesar eventos
         sf::Event event;
         while (window.pollEvent(event))
@@ -88,6 +93,16 @@ int main()
             {
                 // Cerrar la ventana si se recibe el evento de cerrar
                 window.close();
+            }
+
+            // Control de la paleta
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+            {
+                paleta.Presionar(); // Mueve la paleta hacia arriba
+            }
+            else
+            {
+                paleta.Soltar(); // Regresa la paleta a su posición inicial
             }
         }
         // Ajustar el valor de 1.0 / 60.0 para cambiar la velocidad de la simulación física
@@ -120,6 +135,7 @@ int main()
         l7.Dibujar(window);
         l8.Dibujar(window);
         triangulo.Dibujar(window);
+        paletaDerecha.Dibujar(window);
         p1.Dibujar(window);
        /*if(posicion==599)
         {
