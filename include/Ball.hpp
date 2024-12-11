@@ -25,6 +25,7 @@ public:
         fixtureBolaDef.density = densidad;//0.1
         fixtureBolaDef.friction = friccion;//0.7
         cuerpoBola->CreateFixture(&fixtureBolaDef);
+
     }
     ~Ball() {}
     void Dibujar(sf::RenderWindow &window)

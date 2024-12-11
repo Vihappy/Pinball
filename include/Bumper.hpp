@@ -25,7 +25,9 @@ public:
         fixtureSueloDef.shape = &formaSuelo;
         fixtureSueloDef.friction = friccion;
         fixtureSueloDef.restitution=1;
+    
         cuerpoSuelo->CreateFixture(&fixtureSueloDef);
+
     }
     ~Bumper() {}
     void Dibujar(sf::RenderWindow& window){

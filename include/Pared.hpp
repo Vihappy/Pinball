@@ -9,7 +9,7 @@ private:
     sf::RectangleShape Limite;
 
 public:
-    Pared(b2World& mundo,float boxWidth,float boxHeight,float friccion,float x, float y,float angulo)
+    Pared(b2World& mundo,float boxWidth,float boxHeight,float friccion,float x, float y,float angulo,float restitucion)
     {
         // Crear el limite.
         b2BodyDef cuerpoLimitedef;
@@ -22,7 +22,7 @@ public:
         // Agregar la forma al cuerpo
         b2FixtureDef fixtureLimite;
         fixtureLimite.shape = &formaLimite;
-    
+        fixtureLimite.restitution= restitucion;
         cuerpoLimite->CreateFixture(&fixtureLimite);
         Limite.setSize(sf::Vector2f(boxWidth, boxHeight));
         Limite.setOrigin(Limite.getSize().x / 2.0f, Limite.getSize().y / 2.0f);

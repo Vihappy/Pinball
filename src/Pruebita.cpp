@@ -7,7 +7,8 @@
 #include <Pared.hpp>
 #include <Ball.hpp>
 #include<Rebotadores.hpp>
-#include<Paletas.hpp>
+#include<Paleta.hpp>
+#include<Colision.hpp>
 using namespace std;
 
 int main()
@@ -30,7 +31,7 @@ int main()
         // Manejar el error si no se puede cargar la imagen
         return -1;
     }
-        if (!music.openFromFile("./assets/music/Musica.ogg"))
+        if (!music.openFromFile("./assets/music/Intro.ogg"))
     {
         // Error al cargar el archivo de música
         return -1;
@@ -38,38 +39,38 @@ int main()
     b2Vec2 vectorGravedad(0.0f, 10.0f);
     b2World mundo(vectorGravedad);
 
-    // Vértices del triángulo (en metros)
-    std::array<b2Vec2, 3> vertices = {
-        b2Vec2(-1.0f, -0.5f), // Vértice inferior izquierdo
-        b2Vec2(1.0f, -0.5f),  // Vértice inferior derecho
-        b2Vec2(1.0f, 1.0f)    // Vértice superior
-    };
-
-    // Crear un triángulo
-    Triangulo triangulo(mundo, vertices, 1.0f, 300.0f, 470.0f, 0.0f); // Ficción, posición, ángulo
-
     Bumper b1(mundo,28,1,237.0,215);
     Bumper b2(mundo,28,1,120, 130.0f);
     Bumper b3(mundo,28,1,354, 130.0f);
     //Limites
-    Pared l1(mundo,20,635,1,10,318,0.0f);
-    Pared l2(mundo,20,635,1,466,318,0.0f);
-    Pared l3(mundo,476,20,1,238,625,0.0f);
-    Pared l4(mundo,476,20,1,238,10,0.0f);
+    Pared l1(mundo,20,635,1,10,318,0.0,0.0f);
+    Pared l2(mundo,20,635,1,466,318,0.0,0.0f);
+    Pared l3(mundo,476,20,1,238,625,0.0,0.0f);
+    Pared l4(mundo,476,20,1,238,10,0.0,0.0f);
     //Sección con angulo
-    Pared l5(mundo,100,20,1,100,475,33.0f);
-    Pared l6(mundo,100,20,1,375,475,147.0f);
+    Pared l5(mundo,100,20,1,100,475,33.0,0.0f);
+    Pared l6(mundo,100,20,1,375,475,147.0,0.0f);
     //Pared de paletas
-    Pared l7(mundo,15,94,1,65,397,0.0f);
-    Pared l8(mundo,15,94,1,410,397,0.0f);
-    Paleta paletaDerecha(mundo,20,50,1,200,475,45.0f);
+   // Pared l7(mundo,15,94,1,65,397,0.0,0.0f);
+    //Pared l8(mundo,15,94,1,410,397,0.0,0.0f);
+    Pared l7(mundo,15,635,1,65,318,0.0,0.0f);
+    Pared l8(mundo,15,639,1,410,318,0.0,0.0f);
+    //Rebotador izquierdo
+    Pared l9(mundo,5,64,1,108,390,9.0,0.7f);
+    Pared l10(mundo,50,5,1,125,428,29.0,0.7f);
+    Pared l11(mundo,5,85,1,131,399,-21.0,0.7f);
+   // Pared l8(mundo,15,94,1,410,397,0.0f);
 
-    
+    //Rebotador derecho
+    Pared l12(mundo,5,64,1,367,390,-9.0,0.7f);
+    Pared l13(mundo,50,5,1,350,428,-29.0,0.7f);
+    Pared l14(mundo,5,85,1,346,399,21.0,0.7f);
+
+    Paleta paleta(mundo,20,50,1,200,475,45.0f);
 
     //Bola dimámica
-    Ball p1(mundo,15,0.7,0.01,150,30.0f);
+    Ball p1(mundo,10,0.7,0.01,150,30.0f);
    // Ball p2(mundo,15,0.7,0.01,250,30.0f);
-    Ball p3(mundo,15,0.7,0.01,350,30.0f);
     // Crear un sprite y asignarle la textura
     sf::Sprite sprite(texture);
     // Crear un objeto de texto LOTR
@@ -83,8 +84,6 @@ int main()
     // Bucle principal
     while (window.isOpen())
     {
-        paletaDerecha.Presionar();
-
         // Procesar eventos
         sf::Event event;
         while (window.pollEvent(event))
@@ -116,10 +115,9 @@ int main()
         sf::RectangleShape rectangle(sf::Vector2f(100, 100));
         rectangle.setFillColor(sf::Color::Black);
         rectangle.setPosition(150,50);
-        // Esperar hasta que la música termine
         if (music.getStatus() != sf::Music::Playing)
         {
-            window.close();
+            music.play();
         }
         window.draw(rectangle);
         // Dibujar las figuras en la ventana.
@@ -134,17 +132,14 @@ int main()
         l6.Dibujar(window);
         l7.Dibujar(window);
         l8.Dibujar(window);
-        triangulo.Dibujar(window);
-        paletaDerecha.Dibujar(window);
+        l9.Dibujar(window);
+        l10.Dibujar(window);
+        l11.Dibujar(window);
+        l12.Dibujar(window);
+        l13.Dibujar(window);
+        l14.Dibujar(window);
+        paleta.Dibujar(window);
         p1.Dibujar(window);
-       /*if(posicion==599)
-        {
-             Ball p2(mundo,15,0.7,0.01,250,30.0f);
-             window.clear();
-            p2.Dibujar(window);
-        }
-        p3.Dibujar(window);    */     
-        // Mostrar la ventana
         window.display();
     }
     return 0;
