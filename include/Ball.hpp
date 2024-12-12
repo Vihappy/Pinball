@@ -10,14 +10,15 @@ private:
     b2Body *cuerpoBola;
 public:
     Ball(b2World& mundo,float radio,float friccion,float densidad,float x, float y) {
+        const float SCALE = 30.0f;
         // Crear un cuerpo dinámico
         b2BodyDef cuerpoBolaDef;
         cuerpoBolaDef.type = b2_dynamicBody;
-        cuerpoBolaDef.position.Set(x,y);
+        cuerpoBolaDef.position.Set(x/SCALE,y/SCALE);
         cuerpoBola = mundo.CreateBody(&cuerpoBolaDef);
 
         // Crear una forma circular
-        formaBola.m_radius = radio;
+        formaBola.m_radius = radio/SCALE;
 
         // Agregar la forma al cuerpo
         b2FixtureDef fixtureBolaDef;
@@ -31,12 +32,13 @@ public:
     {
         //cout << "Posicion de la bola: " << cuerpoBola->GetPosition().x << ", " << cuerpoBola->GetPosition().y << endl;
         // Dibujar la bola
-        sf::CircleShape bola(formaBola.m_radius);
-        bola.setOrigin(formaBola.m_radius, formaBola.m_radius);
+        const float SCALE = 30.0f;
+        sf::CircleShape bola(formaBola.m_radius*SCALE);
+        bola.setOrigin(formaBola.m_radius*SCALE, formaBola.m_radius*SCALE);
         bola.setFillColor(sf::Color::Red);
         bola.setPosition(
-            cuerpoBola->GetPosition().x, 
-            cuerpoBola->GetPosition().y);
+            cuerpoBola->GetPosition().x*SCALE, 
+            cuerpoBola->GetPosition().y*SCALE);
         window.draw(bola);
     }
         int Posicion(sf::RenderWindow &window)

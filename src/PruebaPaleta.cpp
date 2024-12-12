@@ -9,7 +9,7 @@ int main() {
 
     // Crear una ventana SFML
     sf::RenderWindow ventana(sf::VideoMode(800, 600), "Pinball");
-   //ventana.setFramerateLimit(60);
+    ventana.setFramerateLimit(60);
 
     // Crear una instancia de Paleta
     float anchoPaleta = 200.0f; // Ancho de la paleta en píxeles

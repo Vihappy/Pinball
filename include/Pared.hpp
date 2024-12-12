@@ -10,15 +10,16 @@ private:
 
 public:
     Pared(b2World& mundo,float boxWidth,float boxHeight,float friccion,float x, float y,float angulo,float restitucion)
-    {
+    {   
+        const float SCALE = 30.0f;
         // Crear el limite.
         b2BodyDef cuerpoLimitedef;
-        cuerpoLimitedef.position.Set(x, y);
+        cuerpoLimitedef.position.Set(x/SCALE, y/SCALE);
         constexpr float DEG2RAD = 3.14159f / 180.0f;
         cuerpoLimitedef.angle = angulo * DEG2RAD;
         cuerpoLimite = mundo.CreateBody(&cuerpoLimitedef);
         // Crear una forma rectangular
-        formaLimite.SetAsBox(boxWidth / 2.0f, boxHeight/ 2.0f);
+        formaLimite.SetAsBox((boxWidth/SCALE) / 2.0f, (boxHeight/SCALE)/ 2.0f);
         // Agregar la forma al cuerpo
         b2FixtureDef fixtureLimite;
         fixtureLimite.shape = &formaLimite;
@@ -32,10 +33,11 @@ public:
     ~Pared() {}
     void Dibujar(sf::RenderWindow& window)
     {
+        const float SCALE = 30.0f;
         Limite.setFillColor(sf::Color::Blue);
         Limite.setPosition(		
-        cuerpoLimite->GetPosition().x, 
-        cuerpoLimite->GetPosition().y);
+        cuerpoLimite->GetPosition().x*SCALE, 
+        cuerpoLimite->GetPosition().y*SCALE);
         window.draw(Limite);
     }
 };

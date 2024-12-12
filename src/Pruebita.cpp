@@ -6,7 +6,6 @@
 #include <Bumper.hpp>
 #include <Pared.hpp>
 #include <Ball.hpp>
-#include<Rebotadores.hpp>
 #include<Paleta.hpp>
 #include<Colision.hpp>
 using namespace std;
@@ -17,6 +16,7 @@ int main()
     int fuerza = 1;
     // Crear una ventana
     sf::RenderWindow window(sf::VideoMode(800, 635), "Pinball");
+    window.setFramerateLimit(60);
     sf::Font font;
     sf::Music music;
     if (!font.loadFromFile("./assets/fonts/Ring.ttf"))
