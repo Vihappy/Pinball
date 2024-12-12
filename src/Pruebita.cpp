@@ -39,9 +39,9 @@ int main()
     b2Vec2 vectorGravedad(0.0f, 10.0f);
     b2World mundo(vectorGravedad);
 
-    Bumper b1(mundo,28,1,237.0,215);
-    Bumper b2(mundo,28,1,120, 130.0f);
-    Bumper b3(mundo,28,1,354, 130.0f);
+    Bumper b1(mundo,26,1,237.0,215);
+    Bumper b2(mundo,26,1,125, 130.0f);
+    Bumper b3(mundo,26,1,354, 130.0f);
     //Limites
     Pared l1(mundo,20,635,1,10,318,0.0,0.0f);
     Pared l2(mundo,20,635,1,466,318,0.0,0.0f);
@@ -66,7 +66,8 @@ int main()
     Pared l13(mundo,50,5,1,350,428,-29.0,0.7f);
     Pared l14(mundo,5,85,1,346,399,21.0,0.7f);
 
-    Paleta paleta(mundo,50,20,1,306,517,-30.0f);
+    Paleta paletaIzquierda(mundo,90,20,1,183,527,-30.0,0,60.0f);//Paleta paletaIzquierda(mundo,50,20,1,165,517,-30.0,0,60.0f);
+    Paleta paletaDerecha(mundo,90,20,1,292,527,-30.0,0,60.0f);//Paleta paletaDerecha(mundo,50,20,1,306,517,-30.0,0,60.0f);
 
     //Bola dimámica
     Ball p1(mundo,10,0.7,0.01,150,30.0f);
@@ -95,13 +96,21 @@ int main()
             }
 
             // Control de la paleta
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
-                paleta.Presionar(); // Mueve la paleta hacia arriba
+                paletaDerecha.PresionarDerecho(); // Mueve la paleta hacia arriba
             }
             else
             {
-                paleta.Soltar(); // Regresa la paleta a su posición inicial
+                paletaDerecha.SoltarDerecho(); // Regresa la paleta a su posición inicial
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            {
+                paletaIzquierda.PresionarIzquierdo();
+            }
+            else
+            {
+                paletaIzquierda.SoltarIzquierdo(); // Regresa la paleta a su posición inicial
             }
         }
         // Ajustar el valor de 1.0 / 60.0 para cambiar la velocidad de la simulación física
@@ -138,11 +147,14 @@ int main()
         l12.Dibujar(window);
         l13.Dibujar(window);
         l14.Dibujar(window);
-        paleta.Dibujar(window);
+        paletaIzquierda.Dibujar(window);
+        paletaDerecha.Dibujar(window);
         p1.Dibujar(window);
         window.display();
         posicion=p1.Posicion(window);
-        if(posicion>600){
+         cout << "Posicion de la bola: " <<posicion<<endl;
+        if(posicion>19){
+            cout<<"Hola mundo"<<endl;
             Ball p2(mundo,10,0.7,0.01,150,30.0f);
             p2.Dibujar(window);
         }

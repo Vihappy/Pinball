@@ -10,7 +10,7 @@ private:
     b2RevoluteJoint* joint;
 
 public:
-    Paleta(b2World& mundo, float ancho, float alto, float friccion, float x, float y, float angulo) {
+    Paleta(b2World& mundo, float ancho, float alto, float friccion, float x, float y, float angulo,float anguloInferior,float anguloSuperior) {
         const float SCALE = 30.0f;
         //Trabajo con 30 pixeles por metro.
         // Transformar coordenadas iniciales de píxeles a metros
@@ -49,20 +49,28 @@ public:
         b2RevoluteJointDef jointDef;
         jointDef.Initialize(cuerpoPivote, cuerpoPaleta, cuerpoPivote->GetWorldCenter());
         jointDef.enableLimit = true;
-        jointDef.lowerAngle = -0.0f * b2_pi / 180.0f;
-        jointDef.upperAngle = 60.0f * b2_pi / 180.0f;
+        jointDef.lowerAngle = anguloInferior * b2_pi / 180.0f;
+        jointDef.upperAngle = anguloSuperior * b2_pi / 180.0f;
         jointDef.enableMotor = true;
         jointDef.maxMotorTorque = 1000.0f;
         joint = static_cast<b2RevoluteJoint*>(mundo.CreateJoint(&jointDef));
     }
 
-    void Presionar() {
+    void PresionarDerecho() {
         joint->SetMotorSpeed(20.0f); // Rotar hacia arriba
     }
 
-    void Soltar() {
+    void SoltarDerecho() {
         joint->SetMotorSpeed(-20.0f); // Rotar hacia abajo
     }
+        void PresionarIzquierdo() {
+        joint->SetMotorSpeed(-20.0f); // Rotar hacia arriba
+    }
+
+    void SoltarIzquierdo() {
+        joint->SetMotorSpeed(20.0f); // Rotar hacia abajo
+    }
+
 
     void Dibujar(sf::RenderWindow& window) {
         const float SCALE = 30.0f;
