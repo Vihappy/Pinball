@@ -1,7 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
-
 class Bumper
 {
 private:
@@ -18,7 +17,7 @@ public:
 
         // Construir el objeto fisico
         cuerpoSuelo = mundo.CreateBody(&cuerpoSueloDef);
-
+        //cuerpoSuelo->SetUserData(std::make_shared<std::string>("bumper"));
         // Crear una forma circular
         formaSuelo.m_radius = radio/SCALE;
         // Agregar la forma al cuerpo

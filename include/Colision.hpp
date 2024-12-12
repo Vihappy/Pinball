@@ -1,22 +1,40 @@
-class CollisionListener : public b2ContactListener {
+// Colision.hpp
+#pragma once
+#include <Box2D/Box2D.h>
+#include <iostream>
+#include <string> // Asegúrate de incluir <string>
+
+class Colision : public b2ContactListener
+{
 public:
-    int* score;
+    // Este método se llama cuando dos cuerpos comienzan a colisionar
+void BeginContact(b2Contact* contact) override
+{
+    b2Body* bodyA = contact->GetFixtureA()->GetBody();
+    b2Body* bodyB = contact->GetFixtureB()->GetBody();
 
-    CollisionListener(int* scorePtr) : score(scorePtr) {}
+    // Verificamos que los UserData no sean nulos
+    if (bodyA->GetUserData() != nullptr && bodyB->GetUserData() != nullptr)
+    {
+        auto bodyAName = std::static_pointer_cast<std::string>(bodyA->GetUserData());
+        auto bodyBName = std::static_pointer_cast<std::string>(bodyB->GetUserData());
 
-    void BeginContact(b2Contact* contact) override {
-        // Obtener los datos de usuario de los cuerpos involucrados en la colisión
-        void* userDataA = reinterpret_cast<void*>(contact->GetFixtureA()->GetBody()->GetUserData().pointer);
-        void* userDataB = reinterpret_cast<void*>(contact->GetFixtureB()->GetBody()->GetUserData().pointer);
-
-        if (userDataA && userDataB) {
-            std::string* tagA = static_cast<std::string*>(userDataA);
-            std::string* tagB = static_cast<std::string*>(userDataB);
-
-            if ((*tagA == "ball" && *tagB == "bumper") || (*tagA == "bumper" && *tagB == "ball")) {
-                (*score)++;
-                std::cout << "Score: " << *score << std::endl;
-            }
+        // Verificamos los tipos de los objetos en contacto
+        if (*bodyAName == "bola" && *bodyBName == "bumper")
+        {
+            std::cout << "¡Colisión entre la bola y el bumper!" << std::endl;
+        }
+        else if (*bodyAName == "bumper" && *bodyBName == "bola")
+        {
+            std::cout << "¡Colisión entre el bumper y la bola!" << std::endl;
         }
     }
+}
+
+    // Este método se llama cuando dos cuerpos dejan de colisionar
+    void EndContact(b2Contact* contact) override {}
+
+    // Métodos opcionales para realizar alguna acción antes o después de la resolución de la colisión
+    void PreSolve(b2Contact* contact, const b2Manifold* oldManifold) override {}
+    void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override {}
 };

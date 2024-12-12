@@ -8,9 +8,11 @@ private:
     b2Body* cuerpoPaleta;
     sf::RectangleShape graficoPaleta;
     b2RevoluteJoint* joint;
+    float pivoteX;
+    float pivoteY;
 
 public:
-    Paleta(b2World& mundo, float ancho, float alto, float friccion, float x, float y, float angulo,float anguloInferior,float anguloSuperior) {
+    Paleta(b2World& mundo, float ancho, float alto, float friccion, float x, float y, float angulo,float anguloInferior,float anguloSuperior,bool sentido) {
         const float SCALE = 30.0f;
         //Trabajo con 30 pixeles por metro.
         // Transformar coordenadas iniciales de píxeles a metros
@@ -38,16 +40,27 @@ public:
         graficoPaleta.setOrigin(ancho / 2.0f, alto / 2.0f); // Centrar el gráfico
         graficoPaleta.setPosition(x, y); // Posición inicial en píxeles
         graficoPaleta.setRotation(angulo);
+        if(sentido==true)
+        {
+            pivoteX = xFisico - (ancho / SCALE) / 2 * cos(angulo * b2_pi / 180.0f) + (alto / SCALE) / 2 * sin(angulo * b2_pi / 180.0f);
+            pivoteY = yFisico - (ancho / SCALE) / 2 * sin(angulo * b2_pi / 180.0f) - (alto / SCALE) / 2 * cos(angulo * b2_pi / 180.0f);
+        }
+        else
+        {
+            pivoteX = xFisico + (ancho / SCALE) / 2 * cos(angulo * b2_pi / 180.0f) - (alto / SCALE) / 2 * sin(angulo * b2_pi / 180.0f);
+            pivoteY = yFisico + (ancho / SCALE) / 2 * sin(angulo * b2_pi / 180.0f) + (alto / SCALE) / 2 * cos(angulo * b2_pi / 180.0f);            
+        }
 
-        // Crear pivote estático
+
+        // Crear cuerpo estático (pivote)
         b2BodyDef pivoteDef;
         pivoteDef.type = b2_staticBody;
-        pivoteDef.position.Set(xFisico, yFisico);
+        pivoteDef.position.Set(pivoteX, pivoteY);
         b2Body* cuerpoPivote = mundo.CreateBody(&pivoteDef);
 
         // Configurar RevoluteJoint
         b2RevoluteJointDef jointDef;
-        jointDef.Initialize(cuerpoPivote, cuerpoPaleta, cuerpoPivote->GetWorldCenter());
+        jointDef.Initialize(cuerpoPivote, cuerpoPaleta, b2Vec2(pivoteX, pivoteY));
         jointDef.enableLimit = true;
         jointDef.lowerAngle = anguloInferior * b2_pi / 180.0f;
         jointDef.upperAngle = anguloSuperior * b2_pi / 180.0f;

@@ -7,12 +7,14 @@
 #include <Pared.hpp>
 #include <Ball.hpp>
 #include<Paleta.hpp>
-#include<Colision.hpp>
+//#include<Colision.hpp>
 using namespace std;
 
 int main()
 {
     float posicion;
+    int x;
+    x=0;
     int fuerza = 1;
     // Crear una ventana
     sf::RenderWindow window(sf::VideoMode(800, 635), "Pinball");
@@ -36,6 +38,7 @@ int main()
         // Error al cargar el archivo de música
         return -1;
     }
+    music.setLoop(true); // Esta línea hace que la música se repita
     b2Vec2 vectorGravedad(0.0f, 10.0f);
     b2World mundo(vectorGravedad);
 
@@ -65,13 +68,14 @@ int main()
     Pared l12(mundo,5,64,1,367,390,-9.0,0.7f);
     Pared l13(mundo,50,5,1,350,428,-29.0,0.7f);
     Pared l14(mundo,5,85,1,346,399,21.0,0.7f);
-
-    Paleta paletaIzquierda(mundo,90,20,1,183,527,-30.0,0,60.0f);//Paleta paletaIzquierda(mundo,50,20,1,165,517,-30.0,0,60.0f);
-    Paleta paletaDerecha(mundo,90,20,1,292,527,-30.0,0,60.0f);//Paleta paletaDerecha(mundo,50,20,1,306,517,-30.0,0,60.0f);
-
+    
+    Paleta paletaIzquierda(mundo,90,20,1,190,480,-30.0,0,60.0,true);
+    Paleta paletaDerecha(mundo,90,20,1,292,527,-30.0,0,60.0,false);
     //Bola dimámica
     Ball p1(mundo,10,0.7,0.01,150,30.0f);
-   // Ball p2(mundo,15,0.7,0.01,250,30.0f);
+    //Colision
+    //Colision listener;
+    //mundo.SetContactListener(&listener);
     // Crear un sprite y asignarle la textura
     sf::Sprite sprite(texture);
     // Crear un objeto de texto LOTR
@@ -124,10 +128,6 @@ int main()
         sf::RectangleShape rectangle(sf::Vector2f(100, 100));
         rectangle.setFillColor(sf::Color::Black);
         rectangle.setPosition(150,50);
-        if (music.getStatus() != sf::Music::Playing)
-        {
-            music.play();
-        }
         window.draw(rectangle);
         // Dibujar las figuras en la ventana.
         b1.Dibujar(window);
@@ -141,6 +141,7 @@ int main()
         l6.Dibujar(window);
         l7.Dibujar(window);
         l8.Dibujar(window);
+        
         l9.Dibujar(window);
         l10.Dibujar(window);
         l11.Dibujar(window);
@@ -152,11 +153,12 @@ int main()
         p1.Dibujar(window);
         window.display();
         posicion=p1.Posicion(window);
-         cout << "Posicion de la bola: " <<posicion<<endl;
         if(posicion>19){
-            cout<<"Hola mundo"<<endl;
-            Ball p2(mundo,10,0.7,0.01,150,30.0f);
-            p2.Dibujar(window);
+            if (x<=2)
+            {
+                p1.ReiniciarPosicion(mundo);
+                x++;
+            }
         }
     }
     return 0;
