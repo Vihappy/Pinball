@@ -66,7 +66,7 @@ int main()
     Pared l13(mundo,50,5,1,350,428,-29.0,0.7f);
     Pared l14(mundo,5,85,1,346,399,21.0,0.7f);
 
-  //  Paleta paleta(mundo,20,50,1,200,475,45.0f);
+    Paleta paleta(mundo,50,20,1,306,517,-30.0f);
 
     //Bola dimámica
     Ball p1(mundo,10,0.7,0.01,150,30.0f);
@@ -95,14 +95,14 @@ int main()
             }
 
             // Control de la paleta
-            /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
             {
                 paleta.Presionar(); // Mueve la paleta hacia arriba
             }
             else
             {
                 paleta.Soltar(); // Regresa la paleta a su posición inicial
-            }*/
+            }
         }
         // Ajustar el valor de 1.0 / 60.0 para cambiar la velocidad de la simulación física
         mundo.Step(1.0f / 60.0f, 6, 2);
@@ -138,7 +138,7 @@ int main()
         l12.Dibujar(window);
         l13.Dibujar(window);
         l14.Dibujar(window);
-        //paleta.Dibujar(window);
+        paleta.Dibujar(window);
         p1.Dibujar(window);
         window.display();
         posicion=p1.Posicion(window);
