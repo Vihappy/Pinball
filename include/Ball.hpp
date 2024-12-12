@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
 #include <iostream>
+#include <memory>
 using namespace std;
 class Ball
 {
@@ -21,7 +22,7 @@ public:
         cuerpoBola = mundo.CreateBody(&cuerpoBolaDef);
         // Crear una forma circular
         formaBola.m_radius = radio / SCALE;
-        //cuerpoBola->SetUserData(std::make_shared<std::string>("bola"));
+        cuerpoBola->GetUserData().pointer = reinterpret_cast<uintptr_t>(new std::string("bola"));
         // Agregar la forma al cuerpo
         b2FixtureDef fixtureBolaDef;
         fixtureBolaDef.shape = &formaBola;
@@ -54,7 +55,7 @@ public:
     }
     int Posicion(sf::RenderWindow &window)
     {
-        cout << "Posicion de la bola: " << cuerpoBola->GetPosition().x << ", " << cuerpoBola->GetPosition().y << endl;
+        //cout << "Posicion de la bola: " << cuerpoBola->GetPosition().x << ", " << cuerpoBola->GetPosition().y << endl;
         return cuerpoBola->GetPosition().y;
     }
 };

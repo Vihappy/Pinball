@@ -7,7 +7,7 @@
 #include <Pared.hpp>
 #include <Ball.hpp>
 #include<Paleta.hpp>
-//#include<Colision.hpp>
+#include<Colision.hpp>
 using namespace std;
 
 int main()
@@ -74,8 +74,8 @@ int main()
     //Bola dimámica
     Ball p1(mundo,10,0.7,0.01,150,30.0f);
     //Colision
-    //Colision listener;
-    //mundo.SetContactListener(&listener);
+    Colision listener;
+    mundo.SetContactListener(&listener);
     // Crear un sprite y asignarle la textura
     sf::Sprite sprite(texture);
     // Crear un objeto de texto LOTR

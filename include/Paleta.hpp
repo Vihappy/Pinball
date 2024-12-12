@@ -84,27 +84,16 @@ public:
         joint->SetMotorSpeed(20.0f); // Rotar hacia abajo
     }
 
-
     void Dibujar(sf::RenderWindow& window) {
         const float SCALE = 30.0f;
-
         // Obtener posición física y convertir a gráfica
         float posXGrafico = cuerpoPaleta->GetPosition().x * SCALE;
         float posYGrafico = cuerpoPaleta->GetPosition().y * SCALE;
-
         // Actualizar gráfico
         graficoPaleta.setPosition(posXGrafico, posYGrafico);
         graficoPaleta.setRotation(cuerpoPaleta->GetAngle() * 180.0f / b2_pi);
-
         // Dibujar gráfico
         window.draw(graficoPaleta);
-
-        // Depuración
-        std::cout << "Posición física: (" << cuerpoPaleta->GetPosition().x << ", "
-                  << cuerpoPaleta->GetPosition().y << ") metros\n";
-        std::cout << "Posición gráfica: (" << posXGrafico << ", "
-                  << posYGrafico << ") píxeles\n";
-       // std::cout << "Angulo: (" << cuerpoPaleta->GetAngle() * 180.0f / b2_pi\n";
     }
 
     ~Paleta() {}
