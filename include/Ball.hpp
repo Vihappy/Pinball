@@ -25,7 +25,6 @@ public:
         fixtureBolaDef.density = densidad;//0.1
         fixtureBolaDef.friction = friccion;//0.7
         cuerpoBola->CreateFixture(&fixtureBolaDef);
-
     }
     ~Ball() {}
     void Dibujar(sf::RenderWindow &window)
@@ -42,6 +41,7 @@ public:
     }
         int Posicion(sf::RenderWindow &window)
     {
+        cout << "Posicion de la bola: " << cuerpoBola->GetPosition().x << ", " << cuerpoBola->GetPosition().y << endl;
         return cuerpoBola->GetPosition().y;
     }
 };

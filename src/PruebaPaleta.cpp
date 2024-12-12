@@ -17,7 +17,7 @@ int main() {
     float friccion = 0.5f;      // Fricción de la paleta
     float posX = 400.0f;        // Posición X inicial de la paleta (en píxeles)
     float posY = 500.0f;        // Posición Y inicial de la paleta (en píxeles)
-    float angulo = 0.0f;        // Ángulo inicial de la paleta
+    float angulo = -30.0f;        // Ángulo inicial de la paleta
 
     // Convertir las dimensiones a Box2D (metros)
     Paleta paleta(
