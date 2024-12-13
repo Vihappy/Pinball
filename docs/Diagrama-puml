@@ -1,0 +1,16 @@
+@startuml
+
+class Ball{
+    -b2CircleShape
+    -b2Vec2
+    -b2Body
+    +
+}
+class Bumper
+class Colision
+class Paleta
+class Pared
+class Rebotadores
+
+@enduml
+

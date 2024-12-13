@@ -55,7 +55,7 @@ public:
     }
     int Posicion(sf::RenderWindow &window)
     {
-        //cout << "Posicion de la bola: " << cuerpoBola->GetPosition().x << ", " << cuerpoBola->GetPosition().y << endl;
+        // cout << "Posicion de la bola: " << cuerpoBola->GetPosition().x << ", " << cuerpoBola->GetPosition().y << endl;
         return cuerpoBola->GetPosition().y;
     }
 };
