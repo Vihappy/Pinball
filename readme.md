@@ -8,7 +8,7 @@ Este proyecto es una implementación básica de Pinball en C++ utilizando SFML y
 - src: Contiene los archivos fuente (.cpp) con la implementación del juego.
 - Makefile: Archivo de configuración para automatizar el proceso de compilación y ejecución.
 # Imagenes del Juego
-
+![Jueeegoo](https://github.com/user-attachments/assets/8fded0a1-eafc-41fc-b28d-58b5aac01ff1)
 # Diagrama de clases
 El diagrama incluye las siguiestes clases:
 - Ball
