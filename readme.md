@@ -21,3 +21,4 @@ Define los obstáculos rebotantes en el tablero. Incrementa el puntaje cuando la
 Representa los límites y bordes del tablero. Evita que la pelota salga del área de juego.
 - Colision
 Gestiona los eventos de colisión entre los objetos del juego. Se encarga de verificar qué ocurre cuando la pelota golpea un obstáculo, una pared o una paleta.
+![DiagamaUmlPinball 2](https://github.com/user-attachments/assets/e337cef6-73bb-4e28-9109-019aa09edca6)
