@@ -1,2 +1,2 @@
 PINBALL
-Juego
+Este proyecto es una implementación básica de Pinball en C++ utilizando SFML y Box2D. El juego presenta una bola que desciende al iniciar, rebotando en obstáculos que incrementan el puntaje al tocarlos. En la parte inferior, dos paletas controlables permiten redirigir la bola hacia los obstáculos, manteniéndola en juego. Las físicas del rebote y las colisiones están cuidadosamente integradas para simular un comportamiento realista. Es un ejemplo sencillo pero completo de cómo usar SFML y Box2D para desarrollar mecánicas de un juego clásico.
