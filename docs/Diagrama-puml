@@ -1,16 +1,74 @@
 @startuml
 
-class Ball{
-    -b2CircleShape
-    -b2Vec2
-    -b2Body
-    +
+class Ball {
+  - b2CircleShape formaBola
+  - b2Body *cuerpoBola
+  - b2Vec2 posicionInicial
+  + Ball(b2World &mundo, float radio, float friccion, float densidad, float x, float y)
+  + ~Ball()
+  + void ReiniciarPosicion(b2World &mundo)
+  + void Dibujar(sf::RenderWindow &window)
+  + int Posicion(sf::RenderWindow &window)
 }
-class Bumper
-class Colision
-class Paleta
-class Pared
-class Rebotadores
+
+class Bumper {
+  - b2CircleShape formaSuelo
+  - b2Body *cuerpoSuelo
+  + Bumper(b2World &mundo, float radio, float friccion, float x, float y)
+  + ~Bumper()
+  + void Dibujar(sf::RenderWindow &window)
+}
+
+class Colision {
+  - sf::Music music
+  - int score
+  + void BeginContact(b2Contact *contact)
+  + void EndContact(b2Contact *contact)
+  + int puntaje()
+  + void PreSolve(b2Contact *contact, const b2Manifold *oldManifold)
+  + void PostSolve(b2Contact *contact, const b2ContactImpulse *impulse)
+}
+
+class Paleta {
+  - b2Body* cuerpoPaleta
+  - sf::RectangleShape graficoPaleta
+  - b2RevoluteJoint* joint
+  - float pivoteX
+  - float pivoteY
+  + Paleta(b2World& mundo, float ancho, float alto, float friccion, float x, float y, float angulo, float anguloInferior, float anguloSuperior, bool sentido)
+  + void PresionarDerecho()
+  + void SoltarDerecho()
+  + void PresionarIzquierdo()
+  + void SoltarIzquierdo()
+  + void Dibujar(sf::RenderWindow& window)
+  + ~Paleta()
+}
+
+class Pared {
+  - b2PolygonShape formaLimite
+  - b2Body* cuerpoLimite
+  - sf::RectangleShape Limite
+  + Pared(b2World &mundo, float boxWidth, float boxHeight, float friccion, float x, float y, float angulo, float restitucion)
+  + void Dibujar(sf::RenderWindow &window)
+  + ~Pared()
+}
+
+class Rebotador {
+  - b2PolygonShape formaLimite
+  - b2Body* cuerpoLimite
+  - sf::RectangleShape Limite
+  + Rebotador(b2World &mundo, float boxWidth, float boxHeight, float friccion, float x, float y, float angulo, float restitucion)
+  + void Dibujar(sf::RenderWindow &window)
+  + ~Rebotador()
+}
+
+Ball --> Bumper : "interacts"
+Paleta --> Ball : "interacts"
+Colision --> Ball : "detects collisions"
+Colision --> Bumper : "detects collisions"
+Colision --> Paleta : "detects collisions"
+Colision --> Pared : "detects collisions"
+Colision --> Rebotador : "detects collisions"
 
 @enduml
 
